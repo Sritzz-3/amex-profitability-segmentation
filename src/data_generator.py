@@ -27,16 +27,17 @@ def generate_customers(n=None, seed=None, config=None):
     contacts=np.clip(rng.poisson(np.where(risk|dorm,2,.5),n),0,20); digital=np.clip(rng.beta(np.where(low|dorm,1.5,3),np.where(low|dorm,3,1.8),n),0,1)
     df=pd.DataFrame({'customer_id':np.arange(1,n+1),'tenure_months':tenure,'age':age,'annual_income':income,'credit_limit':limit,'credit_score':score,'annual_spend':spend,'txn_count':txn,'avg_txn_value':avg,'online_spend_share':online,'travel_spend':travel,'dining_spend':dining,'intl_spend':intl,'cash_advance_amt':cash,'avg_revolving_balance':revolving,'utilization_ratio':util,'payment_ratio':pay,'late_payment_count':late,'apr':apr,'annual_fee':fee,'rewards_points_earned':points,'rewards_redeemed_ratio':redeem,'customer_service_contacts':contacts,'digital_engagement_score':digital})
     # Feature-derived financial components with independent multiplicative noise.
-    noise=lambda sd: rng.lognormal(-sd*sd/2,sd,n)
-    pd_=(.004+np.maximum(680-score,0)*.00016+late*.012+util*.018).clip(0,.65)
-    df['interest_income']=revolving*apr*(1-pay*.45)*noise(.08)
-    df['interchange_income']=spend*cfg['pnl']['interchange_rate']*noise(.06)
-    df['fee_income']=(fee+late*29+cash*.03)*noise(.08)
-    df['rewards_cost']=points*.0008*noise(.08)
-    df['credit_loss']=revolving*pd_*.85*noise(.18)
-    df['cost_of_funds']=revolving*.035*noise(.05)
-    df['servicing_cost']=(45+contacts*12)*noise(.08)
-    df['acquisition_cost_amortized']=45*noise(.05)
+    noise=lambda component: rng.lognormal(-cfg['pnl']['component_noise_sd'][component]**2/2,cfg['pnl']['component_noise_sd'][component],n)
+    p=cfg['pnl']
+    pd_=(p['pd_base']+np.maximum(p['pd_score_reference']-score,0)*p['pd_score_penalty_per_point']+late*p['pd_late_payment_rate']+util*p['pd_utilization_rate']).clip(0,.65)
+    df['interest_income']=revolving*apr*(1-pay*p['payment_ratio_adjustment'])*noise('interest_income')
+    df['interchange_income']=spend*p['interchange_rate']*noise('interchange_income')
+    df['fee_income']=(fee+late*p['late_fee']+cash*p['cash_advance_rate'])*noise('fee_income')
+    df['rewards_cost']=points*p['point_value']*noise('rewards_cost')
+    df['credit_loss']=revolving*pd_*p['lgd']*noise('credit_loss')
+    df['cost_of_funds']=revolving*p['funding_rate']*noise('cost_of_funds')
+    df['servicing_cost']=(p['base_servicing_cost']+contacts*p['cost_per_contact'])*noise('servicing_cost')
+    df['acquisition_cost_amortized']=(p['cac']/p['expected_lifetime_years'])*noise('acquisition_cost_amortized')
     caps=cfg['censoring_caps']
     for col,cap in caps.items():
         df[col+'_censored']=df[col]>=cap; df[col]=df[col].clip(upper=cap)

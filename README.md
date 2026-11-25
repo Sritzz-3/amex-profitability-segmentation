@@ -1,6 +1,6 @@
 # AmEx Strategy Challenge | Profitability Segmentation Model
 
-An end-to-end unsupervised segmentation workflow combines customer feature engineering, corrected top-coded measures, a transparent illustrative customer P&L, PCA, K-Means, cluster profiling and stability analysis.
+An end-to-end unsupervised segmentation workflow combines customer feature engineering, corrected top-coded measures, a transparent illustrative customer P&L, PCA, K-Means, cluster profiling and stability analysis. The chosen k maximizes silhouette within the documented business range k=4–8.
 
 > **Synthetic data disclaimer:** The challenge data is proprietary and unavailable. Every customer and financial value in this repository is synthetic, generated from seeded distributions. Reported numbers illustrate the method only and are not real AmEx results.
 
@@ -24,7 +24,7 @@ flowchart LR
 
 `net contribution = interest income + interchange income + fee income − rewards cost − credit loss − cost of funds − servicing cost − acquisition cost amortized`.
 
-Assumptions are centralized in `config.yaml`. Expected credit loss is modeled as balance × a score/late-payment/utilization-based PD × LGD. Components include multiplicative noise in the generated input data; the pipeline recalculates P&L consistently from the feature definitions.
+Rates, PD coefficients, payment adjustment, component noise levels and other P&L assumptions are centralized in `config.yaml`. Expected credit loss is modeled as balance × a score/late-payment/utilization-based PD × LGD. Components include multiplicative noise in the generated input data; the pipeline recalculates P&L consistently from the feature definitions.
 
 ### Censoring correction
 

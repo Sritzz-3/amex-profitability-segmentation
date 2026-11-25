@@ -21,3 +21,18 @@ pnl:
   cost_per_contact: 12
   cac: 180
   expected_lifetime_years: 4
+  payment_ratio_adjustment: 0.45
+  pd_score_reference: 680
+  pd_base: 0.004
+  pd_score_penalty_per_point: 0.00016
+  pd_late_payment_rate: 0.012
+  pd_utilization_rate: 0.018
+  component_noise_sd:
+    interest_income: 0.08
+    interchange_income: 0.06
+    fee_income: 0.08
+    rewards_cost: 0.08
+    credit_loss: 0.18
+    cost_of_funds: 0.05
+    servicing_cost: 0.08
+    acquisition_cost_amortized: 0.05
