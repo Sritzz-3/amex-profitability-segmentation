@@ -1,2 +1,2 @@
-n_customers,features,k,pca_components,silhouette,mean_seed_ari,top20_profit_share,mean_bootstrap_ari
-120000,23,5,14,0.1801647972473261,0.999468249284775,0.48959259069396144,0.9961615493685843
+n_customers,features,k,pca_components,pca_variance_retained,silhouette,mean_seed_ari,top20_profit_share,mean_bootstrap_ari
+120000,23,5,14,0.9041430454597085,0.1801647972473261,0.999468249284775,0.48959259069396144,0.9961615493685843

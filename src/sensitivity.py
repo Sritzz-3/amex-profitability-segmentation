@@ -4,13 +4,13 @@ from sklearn.metrics import adjusted_rand_score,normalized_mutual_info_score,sil
 from scipy.stats import spearmanr
 from .pnl import add_net_contribution
 
-def stability(Z,labels,k,seed=42):
+def stability(Z,labels,k,seed=42,n_seeds=10,n_bootstraps=20):
     rows=[]; rng=np.random.default_rng(seed)
-    for s in range(10):
+    for s in range(n_seeds):
         km=KMeans(n_clusters=k,n_init=10,random_state=seed+100+s).fit(Z); rows.append({'seed':seed+100+s,'ari':adjusted_rand_score(labels,km.labels_)})
     seed_df=pd.DataFrame(rows)
     boot=[]
-    for b in range(20):
+    for b in range(n_bootstraps):
         ix=rng.choice(len(Z),max(2,int(.8*len(Z))),replace=True); km=KMeans(n_clusters=k,n_init=5,random_state=seed+b+500).fit(Z[ix]); pred=km.predict(Z); boot.append({'bootstrap':b,'ari':adjusted_rand_score(labels,pred)})
     return seed_df,pd.DataFrame(boot)
 def pnl_sensitivity(df,cfg,baseline,labels):
