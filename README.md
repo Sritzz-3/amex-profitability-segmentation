@@ -1,6 +1,6 @@
 # AmEx Strategy Challenge | Profitability Segmentation Model
 
-An end-to-end unsupervised segmentation workflow combines customer feature engineering, corrected top-coded measures, a transparent illustrative customer P&L, PCA, K-Means, cluster profiling and stability analysis. The chosen k maximizes silhouette within the documented business range k=4–8.
+This project generates 120,000 synthetic credit-card customer records across 23 behavioral and financial features, then segments them with PCA and K-Means. It profiles each segment with an illustrative customer P&L and flags the top 20% of customers by modeled net contribution.
 
 > **Synthetic data disclaimer:** The challenge data is proprietary and unavailable. Every customer and financial value in this repository is synthetic, generated from seeded distributions. Reported numbers illustrate the method only and are not real AmEx results.
 
@@ -42,18 +42,23 @@ make all
 
 The default generator produces 120,000 records and 23 modeling features. An explicit smaller count is supported for smoke runs. Outputs are written under `outputs/`; data is regenerated under `data/`.
 
+**Reproducibility:** Python 3.11.18, seed 42; the default 120,000-customer pipeline run took 94.92 seconds on this workspace.
+
 ## Results
 
-The pipeline writes the actual metrics for the run to `outputs/tables/run_summary.csv`, cluster profiles to `cluster_profiles.csv`, and all sensitivity tables alongside them. This README's figures embed the generated figures below; numeric outcomes are populated after running the pipeline and must be read from the generated summary rather than treated as published real-world estimates.
+### Key findings
+
+On the 120,000-customer synthetic run, PCA retained 14 components and 90.41% of variance; k=5 had the best silhouette within the business range of 4–8, with a silhouette score of 0.1802. The top 20% by net contribution generated 48.96% of total portfolio profit. Segment assignments were reproducible across refits (mean seed ARI 0.9995, SD 0.0004; mean bootstrap ARI 0.9962). Under ±10% and ±20% P&L assumption changes, top-20% membership Jaccard ranged from 0.9498 to 0.9981, while Spearman contribution rank correlation ranged from 0.9982 to 1.0000; these results describe synthetic data only.
 
 | Metric | Run result |
 |---|---:|
 | Customers / modeling features | 120,000 / 23 |
-| Selected k / PCA components | 5 / 14 (90.41% variance) |
+| Selected k | 5 |
+| PCA components / variance retained | 14 / 90.41% |
 | Silhouette | 0.1802 |
 | Mean seed ARI (10 seeds; SD) | 0.9995 (0.0004) |
 | Mean bootstrap ARI (20 resamples) | 0.9962 |
-| Top-20% share of net contribution | 49.0% |
+| Top-20% share of net contribution | 48.96% |
 
 ## Key figures
 
