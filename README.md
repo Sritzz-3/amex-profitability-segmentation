@@ -94,12 +94,47 @@ On this seeded run, seed stability was high (mean ARI 0.9995, SD 0.0004) and boo
 ## Repository structure
 
 ```text
-src/       generator, censoring, P&L, preprocessing, modeling, sensitivity, reporting
- tests/    unit and full-pipeline smoke tests
-notebooks/ clean walkthrough importing src
-config.yaml all seeds and P&L/model assumptions
-outputs/   figures, compact tables and serialized models
+.github/
+└── workflows/ci.yml
+.gitignore
+LICENSE
+Makefile
+README.md
+config.yaml
+pytest.ini
+requirements.txt
+src/
+├── __init__.py
+├── __main__.py
+├── censoring.py
+├── config.py
+├── data_generator.py
+├── modeling.py
+├── pnl.py
+├── preprocessing.py
+├── profiling.py
+├── run_pipeline.py
+├── sensitivity.py
+└── visualization.py
+tests/
+├── test_censoring.py
+├── test_modeling.py
+├── test_pipeline_smoke.py
+└── test_pnl.py
+data/
+├── processed/.gitkeep
+├── raw/.gitkeep
+└── sample/
+    ├── .gitkeep
+    └── customers_sample.csv
+notebooks/01_walkthrough.ipynb
+outputs/
+├── figures/ (8 committed PNGs)
+├── tables/ (compact committed CSVs and sensitivity_summary.txt)
+└── models/.gitkeep
 ```
+
+Generated raw and processed data, `customer_scored.csv`, and serialized model files are ignored by Git. The pipeline creates model files locally in `outputs/models/`; no models or large datasets are committed.
 
 ## Limitations and future work
 
