@@ -24,7 +24,7 @@ def pnl_sensitivity(df,cfg,baseline,labels):
     # Compare the two censoring policies using identical P&L assumptions.
     naive = df.copy()
     for col in ['annual_spend','avg_revolving_balance','credit_limit']:
-        if col+'_corrected' in naive: naive[col+'_corrected']=naive[col]
+        if col+'_corrected' in naive: naive[col+'_corrected']=naive[col].fillna(naive[col].median())
     vals=add_net_contribution(naive,cfg).net_contribution.to_numpy(); flag=vals>=np.quantile(vals,.8)
     rows.append({'assumption':'censoring_method','change_pct':0,'jaccard_top20':np.logical_and(base,flag).sum()/np.logical_or(base,flag).sum(),'spearman_net_contribution':spearmanr(basev,vals).statistic})
     return pd.DataFrame(rows)

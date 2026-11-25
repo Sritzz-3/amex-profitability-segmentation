@@ -15,7 +15,10 @@ def run(n_customers=None,seed=None):
     cfg=load_config(); seed=cfg['seed'] if seed is None else seed; n=n_customers or cfg['n_customers']
     df=generate_customers(n,seed,cfg); (ROOT/'data/raw').mkdir(parents=True,exist_ok=True); df.to_csv(ROOT/'data/raw/customers.csv',index=False); df.head(1000).to_csv(ROOT/'data/sample/customers_sample.csv',index=False)
     corr,stats=correct_censoring(df,cfg['censoring_caps']); scored=add_net_contribution(corr,cfg)
-    prep,pca,Z=fit_model(corr[FEATURES],cfg,seed); ev=evaluate_k(Z,cfg['k_min'],cfg['k_max'],seed)
+    model_features=corr[FEATURES].copy()
+    for col in cfg['censoring_caps']:
+        model_features[col]=corr[col+'_corrected']
+    prep,pca,Z=fit_model(model_features,cfg,seed); ev=evaluate_k(Z,cfg['k_min'],cfg['k_max'],seed)
     choices=ev[ev.k.between(cfg['business_k_min'],cfg['business_k_max'])]; k=int(choices.sort_values('silhouette',ascending=False).iloc[0].k)
     km=KMeans(n_clusters=k,n_init=20,random_state=seed).fit(Z); labels=km.labels_
     scored,prof,lift,top_profit=profile(scored,labels)
@@ -37,7 +40,7 @@ def run(n_customers=None,seed=None):
     # Hyperparameter sensitivity: k neighbors and requested PCA variance targets.
     hyper=[]
     for var in [.80,.85,.90,.95]:
-        _,p2,z2=fit_model(corr[FEATURES],cfg,seed,var)
+        _,p2,z2=fit_model(model_features,cfg,seed,var)
         for kk in sorted(set(max(2,min(12,k+d)) for d in [-2,-1,0,1,2])):
             mm=KMeans(n_clusters=kk,n_init=10,random_state=seed).fit(z2); hyper.append({'variance_target':var,'k':kk,'ari_vs_baseline':adjusted_rand_score(labels,mm.labels_),'nmi_vs_baseline':normalized_mutual_info_score(labels,mm.labels_),'silhouette':silhouette_score(z2[np.random.default_rng(seed).choice(len(z2),min(5000,len(z2)),False)],mm.predict(z2[np.random.default_rng(seed).choice(len(z2),min(5000,len(z2)),False)]))})
     pd.DataFrame(hyper).to_csv(tabs/'hyperparameter_sensitivity.csv',index=False)

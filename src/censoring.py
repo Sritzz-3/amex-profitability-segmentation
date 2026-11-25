@@ -5,7 +5,7 @@ LOG=logging.getLogger(__name__)
 def correct_censoring(df, caps, method='pareto'):
     out=df.copy(); stats={}
     for col,cap in caps.items():
-        mask=out[col].ge(cap); corrected=col+'_corrected'; out[corrected]=out[col].astype(float)
+        mask=out[col].ge(cap); corrected=col+'_corrected'; out[corrected]=out[col].astype(float).fillna(out.loc[~mask,col].median())
         count=int(mask.sum()); uplift=0.0
         if count and method=='pareto':
             vals=out.loc[~mask,col].dropna().to_numpy(); threshold=np.quantile(vals,.9) if len(vals)>20 else np.min(vals)
@@ -16,7 +16,7 @@ def correct_censoring(df, caps, method='pareto'):
                 if shape < 1:
                     conditional=threshold+threshold_cap+(scale+shape*threshold_cap)/(1-shape)
                 else: conditional=threshold+scale/(1-min(shape,.999))
-                ceiling=max(cap,threshold+genpareto.ppf(.999,(shape,loc,scale)))
+                ceiling=max(cap,threshold+genpareto.ppf(.999,shape,loc=loc,scale=scale))
                 replacement=float(np.clip(max(cap,conditional),cap,ceiling))
             except Exception: replacement=cap*1.15
             out.loc[mask,corrected]=replacement; uplift=replacement-cap
