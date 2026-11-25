@@ -32,6 +32,8 @@ Three inputs are top-coded at configured reporting caps. A generalized Pareto ta
 
 ## Run
 
+Requires Python 3.10 or newer.
+
 ```bash
 make setup
 make all
