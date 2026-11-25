@@ -72,6 +72,10 @@ On the 120,000-customer synthetic run, PCA retained 14 components and 90.41% of 
 
 Profitable Revolvers and Premium Spenders contribute 76.87% of total portfolio profit and account for 84.80% of the flagged top-20% customers. All five segments have positive mean net contribution in this modeled P&L, so none is loss-making on average in this run. High-Risk Revolvers describes a feature profile, not a negative profitability result.
 
+### Interpreting the results
+
+The silhouette score of 0.1802 is low-to-moderate and indicates overlap in feature space, which is expected with behavioral customer data. The model chooses k=5 because it has the best silhouette among the business-range candidates k=4–8; the high ARI scores show the partition is reproducible, not that the clusters are well separated. Across ±10% and ±20% P&L assumption changes, the top-20% membership Jaccard ranged from 0.9498 to 0.9981, and contribution rank correlations remained between 0.9982 and 1.0000. This robustness is expected because proportional changes mostly rescale P&L components; it does not demonstrate stability on real data.
+
 ## Key figures
 
 ![PCA variance](outputs/figures/pca_scree.png)
