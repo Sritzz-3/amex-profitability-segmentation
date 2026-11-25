@@ -1,0 +1,23 @@
+seed: 42
+n_customers: 120000
+pca_variance_target: 0.90
+k_min: 2
+k_max: 12
+business_k_min: 4
+business_k_max: 8
+censoring_caps:
+  annual_spend: 60000
+  avg_revolving_balance: 25000
+  credit_limit: 50000
+pnl:
+  interchange_rate: 0.018
+  late_fee: 29
+  cash_advance_rate: 0.03
+  point_value: 0.0008
+  redemption_uplift: 0.25
+  lgd: 0.85
+  funding_rate: 0.035
+  base_servicing_cost: 45
+  cost_per_contact: 12
+  cac: 180
+  expected_lifetime_years: 4
