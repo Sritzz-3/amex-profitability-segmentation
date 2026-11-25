@@ -44,7 +44,7 @@ make all
 
 The default generator produces 120,000 records and 23 modeling features. An explicit smaller count is supported for smoke runs. Outputs are written under `outputs/`; data is regenerated under `data/`.
 
-**Reproducibility:** Python 3.11.18, seed 42; the default 120,000-customer pipeline run took 94.92 seconds on this workspace.
+**Reproducibility:** Python 3.11.18, seed 42; the default 120,000-customer pipeline run took 90.86 seconds on this workspace.
 
 ## Results
 
