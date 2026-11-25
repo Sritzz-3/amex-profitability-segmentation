@@ -131,9 +131,31 @@ data/
     └── customers_sample.csv
 notebooks/01_walkthrough.ipynb
 outputs/
-├── figures/ (8 committed PNGs)
-├── tables/ (compact committed CSVs and sensitivity_summary.txt)
-└── models/.gitkeep
+├── figures/
+│   ├── .gitkeep
+│   ├── cluster_heatmap.png
+│   ├── contribution_boxplot.png
+│   ├── k_diagnostics.png
+│   ├── pca_clusters.png
+│   ├── pca_scree.png
+│   ├── profit_curve.png
+│   ├── sensitivity_tornado.png
+│   └── stability_ari.png
+├── models/.gitkeep
+└── tables/
+    ├── .gitkeep
+    ├── bootstrap_cluster_jaccard.csv
+    ├── bootstrap_stability.csv
+    ├── censoring_correction.csv
+    ├── cluster_profiles.csv
+    ├── hyperparameter_sensitivity.csv
+    ├── k_diagnostics.csv
+    ├── pca_loadings.csv
+    ├── pnl_sensitivity.csv
+    ├── run_summary.csv
+    ├── seed_stability.csv
+    ├── sensitivity_summary.txt
+    └── top20_cluster_lift.csv
 ```
 
 Generated raw and processed data, `customer_scored.csv`, and serialized model files are ignored by Git. The pipeline creates model files locally in `outputs/models/`; no models or large datasets are committed.
