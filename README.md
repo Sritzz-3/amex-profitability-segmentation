@@ -1,3 +1,5 @@
+[![CI](https://github.com/Sritzz-3/amex-profitability-segmentation/actions/workflows/ci.yml/badge.svg)](https://github.com/Sritzz-3/amex-profitability-segmentation/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # AmEx Strategy Challenge | Profitability Segmentation Model
 
 This project generates 120,000 synthetic credit-card customer records across 23 behavioral and financial features, then segments them with PCA and K-Means. It profiles each segment with an illustrative customer P&L and flags the top 20% of customers by modeled net contribution.
