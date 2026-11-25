@@ -60,6 +60,18 @@ On the 120,000-customer synthetic run, PCA retained 14 components and 90.41% of 
 | Mean bootstrap ARI (20 resamples) | 0.9962 |
 | Top-20% share of net contribution | 48.96% |
 
+## Segment profiles
+
+| Segment | Customers (count; portfolio share) | Mean net contribution ($/year) | Share of portfolio profit | Share of flagged top 20% |
+|---|---:|---:|---:|---:|
+| Premium Spenders | 39,603 (33.00%) | $1,157.07 | 35.74% | 27.66% |
+| Low-Engagement Transactors | 26,972 (22.48%) | $241.77 | 5.09% | 0.66% |
+| High-Risk Revolvers | 11,497 (9.58%) | $1,392.40 | 12.49% | 12.88% |
+| Profitable Revolvers | 27,334 (22.78%) | $1,929.51 | 41.13% | 57.14% |
+| Dormant Balances | 14,594 (12.16%) | $488.14 | 5.56% | 1.65% |
+
+Profitable Revolvers and Premium Spenders contribute 76.87% of total portfolio profit and account for 84.80% of the flagged top-20% customers. All five segments have positive mean net contribution in this modeled P&L, so none is loss-making on average in this run. High-Risk Revolvers describes a feature profile, not a negative profitability result.
+
 ## Key figures
 
 ![PCA variance](outputs/figures/pca_scree.png)
