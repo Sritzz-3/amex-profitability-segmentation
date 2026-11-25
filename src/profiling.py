@@ -12,8 +12,19 @@ def profile(df,labels):
     lift=prof[['cluster','cluster_name','top20_customers','top20_customer_share']].copy(); lift['share_flagged_customers']=lift.top20_customers/max(int(x.is_top20_profitable.sum()),1)
     return x,prof,lift,float(x.loc[x.is_top20_profitable,'net_contribution'].sum()/n if n else 0)
 def _name(r):
-    if r.mean_credit_score<660 and r.mean_utilization_ratio>.45:return 'Loss-Making High-Risk'
-    if r.mean_annual_spend>r.mean_annual_spend*0+18000 and r.mean_net_contribution>0:return 'Premium Spenders'
-    if r.mean_avg_revolving_balance>5000 and r.mean_net_contribution>0:return 'Profitable Revolvers'
-    if r.mean_net_contribution<0:return 'Low-Value / Loss-Making'
+    high_risk = r.mean_credit_score < 660 and r.mean_utilization_ratio > .45
+    if r.mean_net_contribution < 0 and high_risk:
+        return 'Loss-Making High-Risk'
+    if r.mean_net_contribution < 0:
+        return 'Loss-Making Customers'
+    if high_risk:
+        return 'High-Risk Revolvers'
+    if r.mean_annual_spend >= 18000:
+        return 'Premium Spenders'
+    if r.mean_avg_revolving_balance >= 8000 or r.mean_utilization_ratio >= .4:
+        return 'Profitable Revolvers'
+    if r.mean_annual_spend < 2500 and r.mean_avg_revolving_balance >= 3000:
+        return 'Dormant Balances'
+    if r.mean_annual_spend < 8000:
+        return 'Low-Engagement Transactors'
     return 'Steady Transactors'
