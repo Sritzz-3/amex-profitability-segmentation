@@ -8,4 +8,4 @@ run:
 	.venv/bin/python -m src.run_pipeline
 test:
 	.venv/bin/pytest -q
-all: setup data run test
+all: setup data test run

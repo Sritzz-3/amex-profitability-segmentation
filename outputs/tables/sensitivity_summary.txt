@@ -1,0 +1,1 @@
+Seed stability mean ARI 0.999 (SD 0.000); bootstrap mean ARI 0.996; top-20% customers generate 49.0% of net portfolio contribution. Results describe synthetic data only.
